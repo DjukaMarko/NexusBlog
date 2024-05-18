@@ -1,21 +1,32 @@
-"use client";
-import { SignInButton, SignOutButton, useUser } from "@clerk/nextjs";
+import Authentication from '@/components/Authentication';
+import prisma from '../lib/prisma';
+import { truncateString } from '@/lib/utils';
 
-export default function Home() {
-  const { isSignedIn, user } = useUser();
-  return (
-    <div className="w-screen h-screen p-6">
-      <p className="text-7xl font-bold mb-4">Welcome to Nexus - Where Innovation Connects</p>
-      {isSignedIn && <p className="text-4xl mb-4">Welcome, {user.fullName}</p>}
-      {!isSignedIn ?
-        <SignInButton>
-          <button className="border-2 border-black py-2 px-4 rounded-lg hover:bg-black hover:text-white">Sign In</button>
-        </SignInButton>
-        :
-        <SignOutButton>
-          <button className="border-2 border-black py-2 px-4 rounded-lg hover:bg-black hover:text-white">Sign Out</button>
-        </SignOutButton>
+export default async function Home() {
+  const fetchedPosts = await prisma.post.findMany({
+    include: {
+      author: {
+        select: {
+          name: true
+        }
       }
+    }
+  });
+
+  return (
+    <div className="p-6">
+      <p className="text-5xl sm:text-7xl font-bold mb-4">Welcome to Nexus - Where Innovation Connects</p>
+      <Authentication />
+      {fetchedPosts && fetchedPosts.map(post => (
+        <a key={post.id} className='hover:underline flex flex-col space-y-1' href='#' target='_blank'>
+          <p className='text-2xl'>{post.title}</p>
+          <div className='flex space-x-2 items-center'>
+            <p className='italic'>Author: {post.author.name}</p>
+            <p className='italic'>{post.createdAt.toLocaleString()}</p>
+          </div>
+          <p className='text-lg'>{truncateString(post.content, 15)}</p>
+        </a>
+      ))}
     </div>
   );
 }
