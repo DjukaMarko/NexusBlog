@@ -1,5 +1,6 @@
 import { ClerkProvider } from "@clerk/nextjs";
 import "./globals.css";
+import Provider from "./_trpc/Provider";
 
 export default function RootLayout({
   children,
@@ -10,7 +11,9 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <ClerkProvider>
-          {children}
+          <Provider>
+            {children}
+          </Provider>
         </ClerkProvider>
       </body>
     </html>
