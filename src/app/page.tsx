@@ -1,10 +1,9 @@
 import Authentication from '@/_components/Authentication';
 import { truncateString } from '@/lib/utils';
-import { serverClient } from './_trpc/serverClient';
+import { serverCaller } from '@/server';
 
 export default async function Home() {
-  const fetchedPosts = await serverClient.getBlogPosts();
-  
+  const fetchedPosts = await serverCaller.getBlogPosts();
   return (
     <div className="p-6">
       <p className="text-5xl sm:text-7xl font-bold mb-4">Welcome to Nexus - Where Innovation Connects</p>
