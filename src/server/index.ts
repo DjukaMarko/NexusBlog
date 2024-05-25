@@ -3,7 +3,7 @@ import { callerFactory, protectedProcedure, publicProcedure, router } from "./tr
 import { z } from "zod";
 
 export const appRouter = router({
-    getRandom: publicProcedure.query(async () => {
+    getRandom: protectedProcedure.query(async () => {
         return [10, 20, 30, 40];
     }),
     getBlogPosts: publicProcedure.query(async () => {
@@ -21,7 +21,6 @@ export const appRouter = router({
         z.object({
             title: z.string(),
             content: z.string(),
-            authorId: z.number(),
         })
     ).mutation(async (opts) => {
         const { input } = opts;
@@ -29,7 +28,7 @@ export const appRouter = router({
             data: {
                 title: input.title,
                 content: input.content,
-                authorId: input.authorId
+                authorId: 1
             },
         });
     })

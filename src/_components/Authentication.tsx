@@ -4,8 +4,8 @@ import { SignInButton, SignOutButton, useUser } from "@clerk/nextjs";
 export default function Authentication() {
     const { isSignedIn, user } = useUser();
     return (
-        <div className="mb-4">
-            {isSignedIn && <p className="text-4xl mb-4">Welcome, {user.fullName}</p>}
+        <div className="mb-2">
+            {isSignedIn && <p className="text-2xl mb-3">Welcome, {user.fullName}</p>}
             {
                 !isSignedIn ?
                     <SignInButton>
