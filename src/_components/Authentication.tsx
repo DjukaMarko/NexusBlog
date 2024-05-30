@@ -1,20 +1,29 @@
 "use client"
 import { SignInButton, SignOutButton, useUser } from "@clerk/nextjs";
+import { FilePlus2, LogOut } from "lucide-react";
 
 export default function Authentication() {
     const { isSignedIn, user } = useUser();
     return (
-        <div className="mb-2">
-            {isSignedIn && <p className="text-2xl mb-3">Welcome, {user.fullName}</p>}
+        <div className="flex space-x-4 items-center">
+            {isSignedIn && <p className="text-xl">Welcome, {user.fullName}</p>}
             {
                 !isSignedIn ?
                     <SignInButton>
-                        <button className="border-2 border-black py-2 px-4 rounded-lg hover:bg-black hover:text-white">Sign In</button>
+                        <button className="border-[1px] border-black py-1 px-4 rounded-lg hover:bg-black hover:text-white">Sign In</button>
                     </SignInButton>
                     :
-                    <SignOutButton>
-                        <button className="border-2 border-black py-2 px-4 rounded-lg hover:bg-black hover:text-white">Sign Out</button>
-                    </SignOutButton>
+                    <div className="flex space-x-2 items-center">
+                        <SignOutButton>
+                            <div className="w-max p-1 rounded-lg cursor-pointer hover:bg-black/10 border-[1px] border-black">
+                                <LogOut size={24} />
+                            </div>
+                        </SignOutButton>
+
+                        <div className="w-max p-1 rounded-lg cursor-pointer hover:bg-black/10 border-[1px] border-black">
+                            <FilePlus2 size={24} />
+                        </div>
+                    </div>
             }
         </div>
     )
