@@ -44,7 +44,7 @@ export async function POST(req: Request) {
         return new Response('Error occurred', { status: 400 });
     }
 
-    if (evt.type === 'user.created') {
+    /*if (evt.type === 'user.created') {
         console.log('userId:', evt.data.id);
         console.log(evt.data);
 
@@ -63,7 +63,7 @@ export async function POST(req: Request) {
         }
     } else {
         console.log("whatt??")
-    }
+    }*/
     console.log("ende")
 
     return new Response('success', { status: 200 });
