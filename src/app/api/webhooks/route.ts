@@ -12,7 +12,7 @@ export async function POST(req: Request) {
     }
 
     console.log("before headers")
-    
+
     const headerPayload = headers();
     const svix_id = headerPayload.get("svix-id");
     const svix_timestamp = headerPayload.get("svix-timestamp");
@@ -26,6 +26,8 @@ export async function POST(req: Request) {
 
     const payload = await req.json();
     const body = JSON.stringify(payload);
+
+    console.log(payload);
 
     const wh = new Webhook(WEBHOOK_SECRET);
 
@@ -59,6 +61,8 @@ export async function POST(req: Request) {
             console.error('Error creating user:', err);
             return new Response('Error occurred while creating user', { status: 500 });
         }
+    } else {
+        console.log("whatt??")
     }
     console.log("ende")
 
