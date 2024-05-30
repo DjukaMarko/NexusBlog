@@ -29,12 +29,10 @@ export async function POST(req: Request) {
 
     console.log(payload);
 
-    const wh = new Webhook(WEBHOOK_SECRET);
-
-    let evt: WebhookEvent;
-
     try {
-        evt = wh.verify(body, {
+        const wh = new Webhook(WEBHOOK_SECRET);
+
+        wh.verify(body, {
             "svix-id": svix_id,
             "svix-timestamp": svix_timestamp,
             "svix-signature": svix_signature,
