@@ -5,6 +5,7 @@ import prisma from "@/lib/prisma";
 
 export async function POST(req: Request) {
     const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET;
+    console.log("request!");
 
     if (!WEBHOOK_SECRET) {
         throw new Error('Please add WEBHOOK_SECRET from Clerk Dashboard to .env or .env.local');
@@ -55,6 +56,7 @@ export async function POST(req: Request) {
             return new Response('Error occurred while creating user', { status: 500 });
         }
     }
+    console.log("ende")
 
     return new Response('success', { status: 200 });
 }
