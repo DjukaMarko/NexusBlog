@@ -33,7 +33,7 @@ export async function POST(req: Request) {
     const wh = new Webhook(WEBHOOK_SECRET);
     console.log(wh);
     
-    let evt: WebhookEvent;
+    /*let evt: WebhookEvent;
 
     try {
         evt = wh.verify(body, {
@@ -65,7 +65,7 @@ export async function POST(req: Request) {
         }
     } else {
         console.log("whatt??")
-    }
+    }*/
     console.log("ende")
 
     return new Response('success', { status: 200 });
