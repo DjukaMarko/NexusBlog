@@ -4,7 +4,7 @@ import { WebhookEvent } from '@clerk/nextjs/server';
 import prisma from "@/lib/prisma";
 
 export async function POST(req: Request) {
-    const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET;
+  /*  const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET;
     console.log("request!");
 
     if (!WEBHOOK_SECRET) {
@@ -40,7 +40,7 @@ export async function POST(req: Request) {
     } catch (err) {
         console.error('Error verifying webhook:', err);
         return new Response('Error occurred', { status: 400 });
-    }
+    }*/
 
     /*if (evt.type === 'user.created') {
         console.log('userId:', evt.data.id);
