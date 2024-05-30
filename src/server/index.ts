@@ -24,13 +24,13 @@ export const appRouter = router({
         })
     ).mutation(async (opts) => {
         const { input } = opts;
-        return await prisma.post.create({
+        /*return await prisma.post.create({
             data: {
                 title: input.title,
                 content: input.content,
                 authorId: 1
             },
-        });
+        });*/
     })
 });
 export const serverCaller = callerFactory(appRouter)({});
