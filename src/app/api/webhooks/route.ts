@@ -4,8 +4,9 @@ import { WebhookEvent } from '@clerk/nextjs/server';
 import prisma from "@/lib/prisma";
 
 export async function POST(req: Request) {
-  /*  const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET;
+    const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET;
     console.log("request!");
+    console.log(WEBHOOK_SECRET);
 
     if (!WEBHOOK_SECRET) {
         throw new Error('Please add WEBHOOK_SECRET from Clerk Dashboard to .env or .env.local');
@@ -29,10 +30,13 @@ export async function POST(req: Request) {
 
     console.log(payload);
 
-    try {
-        const wh = new Webhook(WEBHOOK_SECRET);
+    const wh = new Webhook(WEBHOOK_SECRET);
+    console.log(wh);
+    
+    let evt: WebhookEvent;
 
-        wh.verify(body, {
+    try {
+        evt = wh.verify(body, {
             "svix-id": svix_id,
             "svix-timestamp": svix_timestamp,
             "svix-signature": svix_signature,
@@ -40,9 +44,9 @@ export async function POST(req: Request) {
     } catch (err) {
         console.error('Error verifying webhook:', err);
         return new Response('Error occurred', { status: 400 });
-    }*/
+    }
 
-    /*if (evt.type === 'user.created') {
+    if (evt.type === 'user.created') {
         console.log('userId:', evt.data.id);
         console.log(evt.data);
 
@@ -61,7 +65,7 @@ export async function POST(req: Request) {
         }
     } else {
         console.log("whatt??")
-    }*/
+    }
     console.log("ende")
 
     return new Response('success', { status: 200 });
