@@ -1,25 +1,17 @@
-import { Webhook } from 'svix';
+import { createHmac } from 'crypto';
 import { headers } from 'next/headers';
-import { WebhookEvent } from '@clerk/nextjs/server';
 import prisma from "@/lib/prisma";
 
 export async function POST(req: Request) {
     const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET;
-    console.log("request!");
-    console.log(WEBHOOK_SECRET);
-
     if (!WEBHOOK_SECRET) {
         throw new Error('Please add WEBHOOK_SECRET from Clerk Dashboard to .env or .env.local');
     }
-
-    console.log("before headers")
 
     const headerPayload = headers();
     const svix_id = headerPayload.get("svix-id");
     const svix_timestamp = headerPayload.get("svix-timestamp");
     const svix_signature = headerPayload.get("svix-signature");
-
-    console.log(svix_id, svix_timestamp, svix_signature);
 
     if (!svix_id || !svix_timestamp || !svix_signature) {
         return new Response('Error occurred -- no svix headers', { status: 400 });
@@ -28,34 +20,25 @@ export async function POST(req: Request) {
     const payload = await req.json();
     const body = JSON.stringify(payload);
 
-    console.log(payload);
+    // Compute the HMAC SHA256 hash
+    const computedSignature = createHmac('sha256', WEBHOOK_SECRET)
+        .update(`${svix_id}.${svix_timestamp}.${body}`)
+        .digest('hex');
 
-    /*const wh = new Webhook(WEBHOOK_SECRET);
-    console.log(wh);*/
-    
-    /*let evt: WebhookEvent;
-
-    try {
-        evt = wh.verify(body, {
-            "svix-id": svix_id,
-            "svix-timestamp": svix_timestamp,
-            "svix-signature": svix_signature,
-        }) as WebhookEvent;
-    } catch (err) {
-        console.error('Error verifying webhook:', err);
-        return new Response('Error occurred', { status: 400 });
+    // Compare the computed signature with the svix_signature
+    const [scheme, signature] = svix_signature.split('=');
+    if (scheme !== 'v1' || computedSignature !== signature) {
+        return new Response('Error occurred -- invalid signature', { status: 400 });
     }
 
-    if (evt.type === 'user.created') {
-        console.log('userId:', evt.data.id);
-        console.log(evt.data);
-
+    // Assuming the signature is valid, process the event
+    if (payload.type === 'user.created') {
         try {
             await prisma.user.create({
                 data: {
-                    id: evt.data.id,
-                    email: evt.data.email_addresses[0].email_address,
-                    name: `${evt.data.first_name} ${evt.data.last_name}`,
+                    id: payload.data.id,
+                    email: payload.data.email_addresses[0].email_address,
+                    name: `${payload.data?.first_name} ${payload.data?.last_name}`,
                     role: "user",
                 },
             });
@@ -63,10 +46,7 @@ export async function POST(req: Request) {
             console.error('Error creating user:', err);
             return new Response('Error occurred while creating user', { status: 500 });
         }
-    } else {
-        console.log("whatt??")
-    }*/
-    console.log("ende")
+    }
 
     return new Response('success', { status: 200 });
 }
