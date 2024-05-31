@@ -30,7 +30,7 @@ export async function POST(req: Request) {
 
     // Compare the computed signature with the svix_signature
     if (computedSignature !== signature) {
-        return new Response('Error occurred -- invalid signature', { status: 400 });
+        return new Response(`Error occurred -- invalid signature: cS: ${computedSignature} and s: ${signature}`, { status: 400 });
     }
 
     // Assuming the signature is valid, process the event
