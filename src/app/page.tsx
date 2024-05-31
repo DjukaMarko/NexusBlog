@@ -1,6 +1,5 @@
-import AddPost from '@/_components/AddPost';
 import Authentication from '@/_components/Authentication';
-import { formatDate, truncateString } from '@/lib/utils';
+import { formatDate } from '@/lib/utils';
 import { serverCaller } from '@/server';
 import type { Metadata } from 'next'
  

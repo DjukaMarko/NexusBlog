@@ -2,6 +2,7 @@ import prisma from "@/lib/prisma";
 import { callerFactory, protectedProcedure, publicProcedure, router } from "./trpc";
 import { z } from "zod";
 import { User, currentUser } from "@clerk/nextjs/server";
+import { randomUUID } from "crypto";
 
 export const appRouter = router({
     getRandom: protectedProcedure.query(async () => {
@@ -28,6 +29,7 @@ export const appRouter = router({
         const user = await currentUser();
         return await prisma.post.create({
             data: {
+                id: ,
                 title: input.title,
                 content: input.content,
                 authorId: user!.id
