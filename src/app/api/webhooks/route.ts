@@ -20,15 +20,16 @@ export async function POST(req: Request) {
     const payload = await req.json();
     const body = JSON.stringify(payload);
 
-    console.log(svix_id, svix_timestamp, svix_signature);
     // Compute the HMAC SHA256 hash
     const computedSignature = createHmac('sha256', WEBHOOK_SECRET)
         .update(`${svix_id}.${svix_timestamp}.${body}`)
         .digest('hex');
 
+    // Remove the version prefix (e.g., "v1,") from the svix_signature
+    const signature = svix_signature.replace('v1,', '');
+
     // Compare the computed signature with the svix_signature
-    const [scheme, signature] = svix_signature.split('=');
-    if (scheme !== 'v1' || computedSignature !== signature) {
+    if (computedSignature !== signature) {
         return new Response('Error occurred -- invalid signature', { status: 400 });
     }
 
@@ -39,7 +40,7 @@ export async function POST(req: Request) {
                 data: {
                     id: payload.data.id,
                     email: payload.data.email_addresses[0].email_address,
-                    name: `${payload.data?.first_name} ${payload.data?.last_name}`,
+                    name: `${payload.data.first_name} ${payload.data.last_name}`,
                     role: "user",
                 },
             });
