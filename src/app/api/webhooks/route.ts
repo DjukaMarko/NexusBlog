@@ -18,7 +18,8 @@ export async function POST(req: Request) {
     }
 
     const payload = await req.json();
-    const body = JSON.stringify(payload);
+    const body = req.clone().text();
+    //const body = JSON.stringify(payload);
 
     // Compute the HMAC SHA256 hash
     const computedSignature = createHmac('sha256', WEBHOOK_SECRET)
