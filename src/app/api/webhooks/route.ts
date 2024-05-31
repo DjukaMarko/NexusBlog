@@ -20,10 +20,10 @@ export async function POST(req: Request) {
     const payload = await req.json();
     const body = JSON.stringify(payload);
 
+    console.log(svix_id, svix_timestamp, svix_signature);
     // Compute the HMAC SHA256 hash
     const secret = WEBHOOK_SECRET.split("_")[1];
-    console.log(secret);
-    const computedSignature = createHmac('sha256', secret)
+    const computedSignature = createHmac('sha256', Buffer.from(secret, 'base64'))
         .update(`${svix_id}.${svix_timestamp}.${body}`)
         .digest('base64');
 
