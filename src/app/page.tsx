@@ -1,3 +1,4 @@
+import AddPost from '@/_components/AddPost';
 import Authentication from '@/_components/Authentication';
 import { truncateString } from '@/lib/utils';
 import { serverCaller } from '@/server';
@@ -18,7 +19,7 @@ export default async function Home() {
         <p className="text-5xl sm:text-6xl font-bold mb-4">Welcome to Nexus - Where Innovation Connects</p>
         <div className='flex items-center space-x-2'>
           <Authentication />
-          {/*<AddPost />*/}
+          {<AddPost />}
         </div>
       </div>
       <div className='flex flex-col space-y-4 border-x-[1px] p-6 border-black'>

@@ -1,6 +1,7 @@
 import prisma from "@/lib/prisma";
 import { callerFactory, protectedProcedure, publicProcedure, router } from "./trpc";
 import { z } from "zod";
+import { User, currentUser } from "@clerk/nextjs/server";
 
 export const appRouter = router({
     getRandom: protectedProcedure.query(async () => {
@@ -24,13 +25,14 @@ export const appRouter = router({
         })
     ).mutation(async (opts) => {
         const { input } = opts;
-        /*return await prisma.post.create({
+        const user = await currentUser();
+        return await prisma.post.create({
             data: {
                 title: input.title,
                 content: input.content,
-                authorId: 1
+                authorId: user!.id
             },
-        });*/
+        });
     })
 });
 export const serverCaller = callerFactory(appRouter)({});
