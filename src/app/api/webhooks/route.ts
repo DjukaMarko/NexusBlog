@@ -23,14 +23,14 @@ export async function POST(req: Request) {
     // Compute the HMAC SHA256 hash
     const computedSignature = createHmac('sha256', WEBHOOK_SECRET)
         .update(`${svix_id}.${svix_timestamp}.${body}`)
-        .digest('hex');
+        .digest('base64');
 
     // Remove the version prefix (e.g., "v1,") from the svix_signature
     const signature = svix_signature.replace('v1,', '');
 
     // Compare the computed signature with the svix_signature
     if (computedSignature !== signature) {
-        return new Response(`Error occurred -- invalid signature: cS: ${computedSignature} and s: ${signature}`, { status: 400 });
+        return new Response(`Error occurred -- invalid signature: computedSignature: ${computedSignature} and Signature: ${signature}`, { status: 400 });
     }
 
     // Assuming the signature is valid, process the event
