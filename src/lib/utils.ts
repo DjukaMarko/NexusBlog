@@ -8,3 +8,15 @@ export function truncateString(str: string, maxLength: number): string {
         return str;
     }
 }
+
+export const formatDate = (date: string) => {
+    const options: Intl.DateTimeFormatOptions = {
+      year: 'numeric',
+      month: 'numeric',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+      hour12: true,
+    };
+    return new Intl.DateTimeFormat('en-US', options).format(new Date(date));
+  };
